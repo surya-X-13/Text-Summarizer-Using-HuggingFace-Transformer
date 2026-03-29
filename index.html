@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Summarizer</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap');
+
+    :root {
+        --bg: #030712;
+        --primary: #fb923c;
+        --primary-glow: rgba(251, 146, 60, 0.3);
+        --accent: #22d3ee; /* Cyan accent for unique contrast */
+        --card-bg: rgba(17, 24, 39, 0.8);
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+    }
+
+    /* 1. Dynamic Aurora Background */
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        margin: 0;
+        min-height: 100vh;
+        background-color: var(--bg);
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    body::before {
+        content: "";
+        position: absolute;
+        width: 200%; height: 200%;
+        top: -50%; left: -50%;
+        background-image: 
+            radial-gradient(at 10% 10%, hsla(20,90%,30%,0.3) 0px, transparent 50%),
+            radial-gradient(at 90% 10%, hsla(180,90%,30%,0.3) 0px, transparent 50%),
+            radial-gradient(at 50% 90%, hsla(260,90%,20%,0.2) 0px, transparent 50%);
+        filter: blur(100px);
+        animation: aurora 20s infinite linear;
+        z-index: -2;
+    }
+
+    @keyframes aurora {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* 2. Neomorphic/Futuristic Container */
+    .container {
+        max-width: 800px;
+        width: 90%;
+        padding: 4rem;
+        background: var(--card-bg);
+        backdrop-filter: blur(20px);
+        border-radius: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        position: relative;
+        box-shadow: 
+            0 20px 50px rgba(0, 0, 0, 0.5),
+            0 0 60px -10px var(--primary-glow);
+        animation: containerLoad 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    /* Container Entrance Animation */
+    @keyframes containerLoad {
+        0% { opacity: 0; transform: scale(0.9) translateY(40px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Container Atmospheric Pulse */
+    .container::after {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: 40px;
+        background: linear-gradient(135deg, transparent, rgba(255,255,255,0.05), transparent);
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    /* 3. Styled Headers (AI/Tech Vibe) */
+    h1 {
+        font-family: 'Orbitron', sans-serif;
+        text-align: center;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 800;
+        margin-bottom: 0px;
+        margin-top: 0px;
+        background: linear-gradient(to right, #fff, var(--primary), var(--accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -2px;
+    }
+
+    h3 {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        text-align: center;
+        font-weight: 300;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        letter-spacing: 6px;
+        text-transform: uppercase;
+        margin-bottom: 3rem;
+        margin-top: 10px;
+    }
+
+    p {
+        text-align: center;
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+        font-weight: 300;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* 4. UNIQUE Form Layout & Shapes */
+    #summarization-form {
+        position: relative;
+        display: block; /* Custom flow */
+    }
+
+    textarea {
+        width: 100%;
+        height: 220px;
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        padding: 2rem;
+        padding-right: 120px; /* Space for the button */
+        border: 2px solid rgba(255, 255, 255, 0.05);
+        font-family: inherit;
+        font-size: 1.1rem;
+        line-height: 1.7;
+        box-sizing: border-box;
+        resize: none;
+        outline: none;
+        transition: all 0.4s ease;
+        
+        /* THE UNIQUE SHAPE: Slanted Hexagon */
+        clip-path: polygon(0% 15%, 15% 0%, 100% 0%, 100% 85%, 85% 100%, 0% 100%);
+        margin-bottom: 0px;
+    }
+
+    textarea:focus {
+        border-color: var(--primary);
+        background: rgba(0, 0, 0, 0.7);
+        box-shadow: 0 0 30px var(--primary-glow);
+    }
+
+    /* 5. UNIQUE Button: The Plasma Core */
+    button {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 90px;
+        height: 90px;
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        border-radius: 50%; /* Circular */
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 800;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 2;
+        box-shadow: 
+            0 0 20px var(--primary-glow),
+            inset 0 0 15px rgba(255,255,255,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    button:hover:not(:disabled) {
+        background: var(--accent);
+        box-shadow: 0 0 40px rgba(34, 211, 238, 0.5);
+        transform: translateY(-50%) scale(1.05);
+    }
+
+    button:active {
+        transform: translateY(-50%) scale(0.95);
+    }
+
+    button:disabled {
+        background: #4b5563;
+        box-shadow: none;
+        cursor: wait;
+        animation: buttonPulse 1.5s infinite;
+    }
+
+    @keyframes buttonPulse {
+        0% { box-shadow: 0 0 0 0 var(--primary-glow); }
+        70% { box-shadow: 0 0 0 15px rgba(251, 146, 60, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(251, 146, 60, 0); }
+    }
+
+    /* 6. Styled Summary Output */
+    #summary-output {
+        margin-top: 4rem;
+        padding: 2.5rem;
+        background: rgba(251, 146, 60, 0.03);
+        border-radius: 25px;
+        border-left: 3px solid var(--primary);
+        border-right: 3px solid var(--accent);
+        position: relative;
+        animation: outputEntrance 1s ease 0.5s both;
+    }
+
+    @keyframes outputEntrance {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    #summary-heading {
+        font-family: 'Orbitron', sans-serif;
+        color: var(--accent);
+        font-size: 1.1rem;
+        text-align: left;
+        margin: 0 0 1rem 0;
+        letter-spacing: 1px;
+        text-transform: none;
+    }
+
+    #summary-text {
+        color: #e2e8f0;
+        line-height: 1.9;
+        font-size: 1.1rem;
+        margin: 0;
+        text-align: left;
+    }
+
+    /* Mobile UX */
+    @media (max-width: 768px) {
+        .container { padding: 2rem 1.5rem; border-radius: 20px; }
+        h1 { font-size: 2.2rem; }
+        h3 { letter-spacing: 3px; margin-bottom: 2rem;}
+        textarea { height: 280px; padding: 1.5rem; padding-bottom: 100px; clip-path: none; border-radius: 15px;}
+        button { position: relative; top: auto; right: auto; transform: none; width: 100%; height: auto; border-radius: 10px; padding: 1rem; margin-top: 15px; }
+        button:hover { transform: translateY(-2px); }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Text Summarizer</h1>
+        <h3>using HuggingFace Transformer</h3>
+        <p>Write or Paste your content below for quick summarization.</p>
+
+        <form id="summarization-form">
+            <textarea id="dialogue-input" placeholder="Enter your content here..." required></textarea>
+            <button type="submit">Summarize</button>
+        </form>
+
+        <div id="summary-output">
+            <h3 id="summary-heading">Content Summary</h3>
+            <p id="summary-text"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("summarization-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+        
+            const dialogueInput = document.getElementById("dialogue-input");
+            const summaryText = document.getElementById("summary-text");
+            const submitButton = e.target.querySelector("button");
+        
+            const dialogue = dialogueInput.value.trim();
+            if (!dialogue) return;
+        
+            summaryText.innerText = "Processing...";
+            submitButton.disabled = true;
+        
+            try {
+                const response = await fetch("/summarize/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ dialogue }),
+                });
+        
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+        
+                const data = await response.json();
+                summaryText.innerText = data.summary || "No summary returned.";
+            } catch (err) {
+                
+                summaryText.innerText = `Error: ${err.message}`;
+            } finally {
+                
+                submitButton.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
